@@ -42,6 +42,7 @@ def geraSudoku(sudoku):
         for j in range(sudoku.n **2):
             if sudoku.tabuleiro[i][j] != 0:
                 sudoku.feitos.append((i,j))
+    arquivo.close()
         
 def geraSaidaHtml(sudoku):
         linha = 0
