@@ -47,7 +47,5 @@ class Sudoku:
                         listaMenores.append((i,j))
                     elif qtd == menorValor:
                         listaMenores.append((i,j))
-        if len(listaMenores) == 0:
-            return False
         aux = random.randint(0, len(listaMenores) -1)
         return listaMenores[aux]

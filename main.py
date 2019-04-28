@@ -19,7 +19,6 @@ def resolveSudoku(sudoku, celula = None):
         sudoku.preenchidos -= 1
     return False
 
-
 def geraSudoku(sudoku):
     indice = random.randint(0, 2365)
     arquivo = open("tabuleiros.txt", "r")
