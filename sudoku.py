@@ -49,3 +49,15 @@ class Sudoku:
                         listaMenores.append((i,j))
         aux = random.randint(0, len(listaMenores) -1)
         return listaMenores[aux]
+
+    def podeInserir(self, celula, valor):
+        if self.valorBloco(celula, valor) or self.valorLinhaColuna(celula, valor):
+            return False
+        return True
+
+    def proximaBackTrack(self):
+        for i in range(self.n **2):
+            for j in range(self.n **2):
+                if self.tabuleiro[i][j] == 0:
+                    return ((i,j))
+        return True

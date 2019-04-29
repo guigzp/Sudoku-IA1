@@ -1,6 +1,6 @@
 from sudoku import *
 
-def resolveSudoku(sudoku, celula = None):   
+def resolveSudokuPSR(sudoku, celula = None):   
     if sudoku.preenchidos == sudoku.n ** 4:
         return True
     if celula == None:
@@ -13,11 +13,26 @@ def resolveSudoku(sudoku, celula = None):
             return True
         proximaCelula = sudoku.proximaCelula()
         if proximaCelula != False:
-            if(resolveSudoku(sudoku, proximaCelula)):
+            if(resolveSudokuPSR(sudoku, proximaCelula)):
                 return True
         sudoku.tabuleiro[celula[0]][celula[1]] = 0
         sudoku.preenchidos -= 1
     return False
+
+
+def sudokuBackTrack(sudoku, celula = None):
+    if celula == None:
+        celula = sudoku.proximaBackTrack()
+    if celula == True:
+        return True
+    for i in range(1, sudoku.n ** 2 + 1):
+        if sudoku.podeInserir(celula, i):
+            sudoku.tabuleiro[celula[0]][celula[1]] = i
+            if sudokuBackTrack(sudoku, sudoku.proximaBackTrack()):
+                return True
+            sudoku.tabuleiro[celula[0]][celula[1]] = 0
+    return False
+
 
 def geraSudoku(sudoku):
     indice = random.randint(0, 2365)
@@ -33,7 +48,7 @@ def geraSudoku(sudoku):
         else:
             aux.append(int(i))
             sudoku.preenchidos += 1
-        if cont == 9:
+        if cont == sudoku.n ** 2:
             cont = 0
             sudoku.tabuleiro.append(aux.copy())
             aux.clear()
@@ -68,5 +83,6 @@ def geraSaidaHtml(sudoku):
 
 sdk = Sudoku(3)
 geraSudoku(sdk)
-resolveSudoku(sdk)
+#resolveSudokuPSR(sdk)
+sudokuBackTrack(sdk)
 geraSaidaHtml(sdk)
