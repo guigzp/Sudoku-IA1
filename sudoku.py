@@ -6,6 +6,9 @@ class Sudoku:
         self.tabuleiro = []
         self.preenchidos = 0
         self.feitos = []
+        self.quantidade = []
+        for i in range(n**2 + 1):
+            self.quantidade.append(0)
 
     def valorLinhaColuna(self, celula, valor):
         for x in self.tabuleiro[celula[0]]:

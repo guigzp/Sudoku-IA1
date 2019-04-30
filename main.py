@@ -7,9 +7,11 @@ def resolveSudokuPSR(sudoku, celula = None):
     if celula == None:
         celula = sudoku.proximaCelula()
     valoresCelula = sudoku.valoresCelula(celula)
+    valoresCelula.sort(key = lambda x: sudoku.quantidade[x], reverse = True)
     for x in valoresCelula:
         sudoku.tabuleiro[celula[0]][celula[1]] = x
         sudoku.preenchidos += 1
+        sudoku.quantidade[x] += 1
         if sudoku.preenchidos == sudoku.n ** 4:
             return True
         proximaCelula = sudoku.proximaCelula()
@@ -18,6 +20,7 @@ def resolveSudokuPSR(sudoku, celula = None):
                 return True
         sudoku.tabuleiro[celula[0]][celula[1]] = 0
         sudoku.preenchidos -= 1
+        sudoku.quantidade[x] -= 1
     return False
 
 
@@ -54,8 +57,10 @@ def geraSudoku(sudoku, indice):
             aux.clear()
     for i in range(sudoku.n **2):
         for j in range(sudoku.n **2):
-            if sudoku.tabuleiro[i][j] != 0:
+            valor = sudoku.tabuleiro[i][j]
+            if valor != 0:
                 sudoku.feitos.append((i,j))
+                sudoku.quantidade[valor] += 1
     arquivo.close()
         
 def geraSaidaHtml(sudoku, nomesaida):
@@ -101,5 +106,6 @@ for i in range(10):
 
 print("Tempo Médio PSR: %s segundos" % (sum(temposPSR) / 10))
 print("Tempo Médio BT: %s segundos" % (sum(temposBT) / 10))
-#geraSaidaHtml(sdk, 'sudokuPSR.html')
-#geraSaidaHtml(sdk2, 'sudokuBT.html')
+
+geraSaidaHtml(sdk, 'sudokuPSR.html')
+geraSaidaHtml(sdk2, 'sudokuBT.html')
