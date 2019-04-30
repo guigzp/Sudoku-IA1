@@ -1,4 +1,5 @@
 from sudoku import *
+import time
 
 def resolveSudokuPSR(sudoku, celula = None):   
     if sudoku.preenchidos == sudoku.n ** 4:
@@ -34,8 +35,7 @@ def sudokuBackTrack(sudoku, celula = None):
     return False
 
 
-def geraSudoku(sudoku):
-    indice = random.randint(0, 2365)
+def geraSudoku(sudoku, indice):
     arquivo = open("tabuleiros.txt", "r")
     linhas = arquivo.readlines()
     linha = linhas[indice].rstrip("\n\r")
@@ -58,9 +58,9 @@ def geraSudoku(sudoku):
                 sudoku.feitos.append((i,j))
     arquivo.close()
         
-def geraSaidaHtml(sudoku):
+def geraSaidaHtml(sudoku, nomesaida):
         linha = 0
-        saida = open("sudoku.html", "w")
+        saida = open(nomesaida, "w")
         saida.write('<style>table { border-collapse: collapse; margin: auto; font-family: Calibri, sans-serif; } colgroup, tbody { border: solid medium; } td { border: solid thin; height: 1.4em; width: 1.4em; text-align: center; padding: 0;  } .cinza {background-color: #d3d3d3 }</style>')
         saida.write('<table>')
         for i in range(sudoku.n):
@@ -82,7 +82,17 @@ def geraSaidaHtml(sudoku):
         saida.close()
 
 sdk = Sudoku(3)
-geraSudoku(sdk)
-#resolveSudokuPSR(sdk)
-sudokuBackTrack(sdk)
-geraSaidaHtml(sdk)
+sdk2 = Sudoku(3)
+indice = random.randint(0, 2365)
+geraSudoku(sdk, indice)
+geraSudoku(sdk2, indice)
+tempoInicialPSR = time.time()
+resolveSudokuPSR(sdk)
+tempoFinalPSR = time.time()
+tempoInicialBT = time.time()
+sudokuBackTrack(sdk2)
+tempoFinalBT = time.time()
+print("Tempo PSR: %s segundos" % (tempoFinalPSR - tempoInicialPSR))
+print("Tempo BT: %s segundos" % (tempoFinalBT - tempoInicialBT))
+geraSaidaHtml(sdk, 'sudokuPSR.html')
+geraSaidaHtml(sdk2, 'sudokuBT.html')
