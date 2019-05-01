@@ -1,4 +1,5 @@
 from sudoku import *
+import matplotlib.pyplot as plt 
 import time
 
 def resolveSudokuPSR(sudoku, celula = None):   
@@ -89,7 +90,7 @@ def geraSaidaHtml(sudoku, nomesaida):
 temposPSR = []
 temposBT = []
 
-for i in range(10):
+for i in range(5):
     sdk = Sudoku(3)
     sdk2 = Sudoku(3)
     indice = random.randint(0, 2365)
@@ -104,8 +105,18 @@ for i in range(10):
     temposPSR.append(tempoFinalPSR - tempoInicialPSR)
     temposBT.append(tempoFinalBT - tempoInicialBT)
 
-print("Tempo Médio PSR: %s segundos" % (sum(temposPSR) / 10))
-print("Tempo Médio BT: %s segundos" % (sum(temposBT) / 10))
+print("Tempo Médio PSR: %s segundos" % (sum(temposPSR) / 5))
+print("Tempo Médio BT: %s segundos" % (sum(temposBT) / 5))
+
+aux = [x for x in range(1,6)]
+
+plt.plot(aux,temposPSR, marker = 'o', label = "PSR") 
+plt.plot(aux, temposBT, marker = 'o', label = "BT") 
+plt.xlabel('Sudoku')
+plt.ylabel('Tempo(s)')
+plt.legend()
+plt.title('Comparação do Consumo de Tempo')
+plt.show()
 
 geraSaidaHtml(sdk, 'sudokuPSR.html')
 geraSaidaHtml(sdk2, 'sudokuBT.html')
